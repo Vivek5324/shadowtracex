@@ -1,0 +1,41 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-cyber-black text-gray-300 font-sans antialiased overflow-x-hidden selection:bg-cyber-green selection:text-black;
+  }
+}
+
+@layer utilities {
+  .glass-panel {
+    @apply bg-cyber-dark/80 backdrop-blur-md border border-cyber-gray shadow-lg;
+  }
+  
+  .terminal-text {
+    @apply font-mono text-sm tracking-wide;
+  }
+  
+  .glow-green {
+    text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+  }
+  
+  .glow-red {
+    text-shadow: 0 0 5px rgba(255, 0, 60, 0.5);
+  }
+}
+
+/* Custom scrollbar for terminal */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  @apply bg-cyber-gray rounded-full;
+}
+::-webkit-scrollbar-thumb:hover {
+  @apply bg-gray-500;
+}

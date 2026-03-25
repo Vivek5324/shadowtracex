@@ -1,0 +1,8 @@
+{
+  "rewrites": [
+    {
+      "source": "/api/abuseipdb/:path*",
+      "destination": "https://api.abuseipdb.com/:path*"
+    }
+  ]
+}

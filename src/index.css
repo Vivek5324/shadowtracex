@@ -10,7 +10,7 @@
 
 @layer utilities {
   .glass-panel {
-    @apply bg-cyber-dark/80 backdrop-blur-md border border-cyber-gray shadow-lg;
+    @apply bg-cyber-dark/80 backdrop-blur-md border border-cyber-gray shadow-[0_0_15px_rgba(0,0,0,0.5)];
   }
   
   .terminal-text {
@@ -18,11 +18,35 @@
   }
   
   .glow-green {
-    text-shadow: 0 0 5px rgba(0, 255, 65, 0.5);
+    text-shadow: 0 0 8px rgba(0, 255, 65, 0.8), 0 0 20px rgba(0, 255, 65, 0.4);
   }
   
   .glow-red {
-    text-shadow: 0 0 5px rgba(255, 0, 60, 0.5);
+    text-shadow: 0 0 8px rgba(255, 0, 60, 0.8), 0 0 20px rgba(255, 0, 60, 0.4);
+  }
+  
+  .bg-grid-cyber {
+    background-image: linear-gradient(rgba(0, 255, 65, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 255, 65, 0.05) 1px, transparent 1px);
+    background-size: 30px 30px;
+  }
+  
+  .scanline-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: linear-gradient(
+      to bottom,
+      rgba(255,255,255,0),
+      rgba(255,255,255,0) 50%,
+      rgba(0,0,0,0.1) 50%,
+      rgba(0,0,0,0.1)
+    );
+    background-size: 100% 4px;
+    pointer-events: none;
+    z-index: 50;
   }
 }
 

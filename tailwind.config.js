@@ -25,6 +25,10 @@ export default {
         'fade-in': 'fadeIn 0.3s ease-in-out',
         'slide-up': 'slideUp 0.3s ease-out',
         'blink': 'blink 1s step-end infinite',
+        'crt-flicker': 'crtFlicker 0.15s infinite',
+        'scanline': 'scanline 8s linear infinite',
+        'glitch': 'glitch 2s linear infinite',
+        'alarm': 'alarm 1s ease-in-out infinite',
       },
       keyframes: {
         fadeIn: {
@@ -38,6 +42,23 @@ export default {
         blink: {
           '0%, 100%': { opacity: '1' },
           '50%': { opacity: '0' },
+        },
+        crtFlicker: {
+          '0%': { opacity: '0.95' },
+          '100%': { opacity: '1' }
+        },
+        scanline: {
+          '0%': { transform: 'translateY(-100%)' },
+          '100%': { transform: 'translateY(100vh)' }
+        },
+        glitch: {
+          '2%, 64%': { transform: 'translate(2px, 0) skew(0deg)' },
+          '4%, 60%': { transform: 'translate(-2px, 0) skew(0deg)' },
+          '62%': { transform: 'translate(0, 0) skew(5deg)' },
+        },
+        alarm: {
+          '0%, 100%': { backgroundColor: 'rgba(255, 0, 60, 0.1)', borderColor: 'rgba(255, 0, 60, 0.5)', boxShadow: 'inset 0 0 20px rgba(255,0,0,0.2)' },
+          '50%': { backgroundColor: 'rgba(255, 0, 60, 0.3)', borderColor: 'rgba(255, 0, 60, 1)', boxShadow: 'inset 0 0 40px rgba(255,0,0,0.6)' },
         }
       }
     },

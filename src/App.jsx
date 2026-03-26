@@ -6,6 +6,7 @@ import AutoResponsePanel from './components/AutoResponsePanel';
 import RiskMeter from './components/RiskMeter';
 import IpLookupPanel from './components/IpLookupPanel';
 import ToolkitPage from './components/ToolkitPage';
+import ThreatMap from './components/ThreatMap';
 import { checkIp, hasApiKey } from './services/abuseipdbService';
 
 // ── Randomization helpers ──────────────────────────────────────────────
@@ -401,14 +402,23 @@ function App() {
   }, [isAttacking, addLog]);
 
   return (
-    <div className="min-h-screen bg-cyber-black text-gray-300 p-4 font-sans">
+    <div className="min-h-screen bg-cyber-black bg-grid-cyber text-gray-300 p-4 font-sans relative">
+      <div className="scanline-overlay"></div>
+      
+      {/* Global Alert Banner */}
+      {riskPercentage > 50 && (
+        <div className="absolute top-0 left-0 w-full bg-red-600 text-white font-mono font-bold text-center py-1 z-50 animate-pulse tracking-[0.2em] shadow-[0_0_20px_rgba(255,0,0,0.8)] border-b border-red-400">
+          ⚠️ CRITICAL ALERT: SYSTEM UNDER ACTIVE ATTACK ⚠️
+        </div>
+      )}
+
       {/* Header */}
-      <header className="mb-4 flex flex-col md:flex-row justify-between items-start md:items-end border-b pb-3 border-cyber-gray gap-4">
+      <header className={`mb-4 flex flex-col md:flex-row justify-between items-start md:items-end border-b pb-3 border-cyber-gray gap-4 relative z-10 ${riskPercentage > 50 ? 'mt-8' : ''}`}>
         <div>
           <h1 className="text-4xl font-bold text-white tracking-widest flex items-center shadow-text">
             <span className="text-cyber-green glow-green mr-2">SHADOWTRACE</span> X
           </h1>
-          <p className="font-mono text-gray-500 text-sm mt-1">v3.0.0 // LIVE THREAT INTELLIGENCE + ATTACK SIMULATION</p>
+          <p className="font-mono text-gray-400 text-sm mt-1 uppercase tracking-wide">Real-Time Cyber Warfare Simulation Dashboard</p>
         </div>
         
         <div className="flex flex-col items-end gap-2 w-full md:w-auto">
@@ -459,9 +469,14 @@ function App() {
             </div>
           </div>
 
-          {/* Center: Live Feed */}
-          <div className="col-span-12 md:col-span-8 lg:col-span-6" style={{ minHeight: '500px' }}>
-            <LiveAttackTimeline logs={logs} onIpClick={handleIpClick} />
+          {/* Center: Live Feed & Map */}
+          <div className="col-span-12 md:col-span-8 lg:col-span-6 flex flex-col gap-3" style={{ minHeight: '600px' }}>
+            <div className="flex-grow" style={{ minHeight: '350px' }}>
+              <LiveAttackTimeline logs={logs} onIpClick={handleIpClick} />
+            </div>
+            <div style={{ height: '220px' }}>
+              <ThreatMap activeAttackId={activeAttackId} />
+            </div>
           </div>
 
           {/* Right Column: IP Intel + Alerts + Responses */}

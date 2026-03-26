@@ -8,7 +8,6 @@ import RiskMeter from './components/RiskMeter';
 import KillChainVisualizer from './components/KillChainVisualizer';
 import IpLookupPanel from './components/IpLookupPanel';
 import ToolkitPage from './components/ToolkitPage';
-import { checkIp, hasApiKey } from './services/abuseipdbService';
 
 // ── Randomization helpers ──────────────────────────────────────────────
 
@@ -311,9 +310,7 @@ function App() {
     }
 
     const tLookup = setTimeout(() => {
-      if (hasApiKey()) {
-        setLookupIp(attackerIp);
-      }
+      setLookupIp(attackerIp);
     }, maxDelay * 0.4);
     timeoutRefs.current.push(tLookup);
 

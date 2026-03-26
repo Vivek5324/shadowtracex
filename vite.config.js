@@ -5,13 +5,7 @@ import react from '@vitejs/plugin-react'
 export default defineConfig({
   plugins: [react()],
   server: {
-    proxy: {
-      '/abuseipdb-check': {
-        target: 'https://api.abuseipdb.com',
-        changeOrigin: true,
-        rewrite: () => '/api/v2/check',
-        secure: true
-      }
-    }
+    host: true, // Listen on all local IPs
+    port: 5173
   }
 })

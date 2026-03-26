@@ -20,7 +20,7 @@ const ATTACK_DEFS = [
       'Known credential dump user-agents (python-requests, curl)'
     ],
     realWorldExample: '2023 Okta breach — attackers used credential stuffing from residential proxies targeting customer admin panels.',
-    phases: ['Recon', 'Credential Spray', 'Auth Bypass', 'Access Gained']
+    phases: ['Recon', 'Access', 'PrivEsc', 'Lateral', 'Exfil']
   },
   {
     id: 'port_scan',
@@ -40,7 +40,7 @@ const ATTACK_DEFS = [
       'Half-open (SYN) scan pattern — no ACK completion'
     ],
     realWorldExample: 'Standard first step in most penetration tests and attacks — Nmap SYN scan identified exposed MongoDB on port 27017 leading to data exfil.',
-    phases: ['Host Discovery', 'Port Probing', 'Service Detection', 'OS Fingerprint']
+    phases: ['Recon', 'Access', 'PrivEsc', 'Lateral', 'Exfil']
   },
   {
     id: 'apt_attack',
@@ -60,7 +60,7 @@ const ATTACK_DEFS = [
       'LSASS memory access attempts'
     ],
     realWorldExample: 'SolarWinds SUNBURST (2020) — APT29 injected backdoor into software updates, used DNS for C2, laterally moved to access email systems.',
-    phases: ['Initial Access', 'Lateral Movement', 'Privilege Escalation', 'Data Exfil']
+    phases: ['Recon', 'Access', 'PrivEsc', 'Lateral', 'Exfil']
   },
   {
     id: 'botnet',
@@ -80,7 +80,7 @@ const ATTACK_DEFS = [
       'Unusual traffic from IoT device user-agents'
     ],
     realWorldExample: 'Dyn DNS attack (2016) — Mirai botnet of 100K+ IoT devices generated 1.2 Tbps, took down Twitter, Reddit, GitHub.',
-    phases: ['Traffic Ramp', 'Flood Peak', 'Resource Saturation', 'Service Degradation']
+    phases: ['Recon', 'Access', 'PrivEsc', 'Lateral', 'Exfil']
   }
 ];
 

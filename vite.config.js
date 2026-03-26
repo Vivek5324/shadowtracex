@@ -6,10 +6,10 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/proxy/abuseipdb': {
+      '/abuseipdb-check': {
         target: 'https://api.abuseipdb.com',
         changeOrigin: true,
-        rewrite: (path) => path.replace(/^\/proxy\/abuseipdb/, ''),
+        rewrite: () => '/api/v2/check',
         secure: true
       }
     }

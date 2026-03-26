@@ -34,7 +34,7 @@ export async function checkIp(ip, maxAgeDays = 90) {
     verbose: ''
   });
 
-  const response = await fetch(`/proxy/abuseipdb/api/v2/check?${params}`, {
+  const response = await fetch(`/abuseipdb-check?${params}`, {
     method: 'GET',
     headers: {
       'Key': apiKey,

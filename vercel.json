@@ -1,11 +1,8 @@
 {
-  "framework": "vite",
-  "buildCommand": "npm run build",
-  "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/proxy/abuseipdb/:path*",
-      "destination": "https://api.abuseipdb.com/:path*"
+      "source": "/abuseipdb-check",
+      "destination": "https://api.abuseipdb.com/api/v2/check"
     },
     {
       "source": "/(.*)",

@@ -4,7 +4,7 @@
   "outputDirectory": "dist",
   "rewrites": [
     {
-      "source": "/api/abuseipdb/:path*",
+      "source": "/proxy/abuseipdb/:path*",
       "destination": "https://api.abuseipdb.com/:path*"
     },
     {

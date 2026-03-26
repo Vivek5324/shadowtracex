@@ -10,6 +10,8 @@ import LogParser from './tools/LogParser';
 import IncidentReportGenerator from './tools/IncidentReportGenerator';
 import PasswordAnalyzer from './tools/PasswordAnalyzer';
 import WhoisDnsRecon from './tools/WhoisDnsRecon';
+import MitreAttackDB from './tools/MitreAttackDB';
+import { FaBook } from 'react-icons/fa';
 
 function ToolkitPage({ appState }) {
   const [activeTab, setActiveTab] = useState('cve');
@@ -29,6 +31,7 @@ function ToolkitPage({ appState }) {
     },
     { id: 'password', name: 'Password Analyzer', icon: <FaKey />, component: <PasswordAnalyzer /> },
     { id: 'whois', name: 'Whois/DNS', icon: <FaGlobe />, component: <WhoisDnsRecon /> },
+    { id: 'mitre', name: 'MITRE ATT&CK', icon: <FaBook />, component: <MitreAttackDB /> },
   ];
 
   return (

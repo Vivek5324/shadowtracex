@@ -202,14 +202,31 @@ function AttackControlPanel({ onTriggerAttack, isAttacking, activeAttackId, acti
                     </div>
                   )}
 
+                  {/* Interactive Attack Configuration */}
+                  {!isActive && (
+                    <div className="pt-2 border-t border-gray-800/50 mt-2">
+                      <label className="text-xs text-cyber-green uppercase mb-1 font-bold block animate-pulse">Configure Target Setup</label>
+                      <input 
+                        type="text" 
+                        id={`target-${attack.id}`}
+                        placeholder="Target IP / Domain (Default: 10.0.1.5)" 
+                        className="w-full bg-black/50 border border-gray-700 text-gray-300 text-sm font-mono p-2 rounded focus:outline-none focus:border-cyber-green transition-colors mb-3"
+                      />
+                    </div>
+                  )}
+
                   {/* Launch Button */}
                   <button
-                    onClick={() => onTriggerAttack(attack.id)}
+                    onClick={() => {
+                       const targetInput = document.getElementById(`target-${attack.id}`);
+                       const customTarget = targetInput && targetInput.value.trim() !== '' ? targetInput.value.trim() : '10.0.1.5';
+                       onTriggerAttack(attack.id, customTarget);
+                    }}
                     disabled={isAttacking}
-                    className={`w-full py-2 rounded border font-mono text-sm font-bold uppercase flex items-center justify-center gap-2 transition-all duration-300 ${c.btn} disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98]`}
+                    className={`w-full py-2 rounded border font-mono text-sm font-bold uppercase flex items-center justify-center gap-2 transition-all duration-300 ${c.btn} disabled:opacity-30 disabled:cursor-not-allowed active:scale-[0.98] mt-2`}
                   >
                     <FaPlay className="text-xs" />
-                    {isActive ? 'Simulation Running...' : 'Launch Simulation'}
+                    {isActive ? 'Simulation Running...' : 'INITIALIZE ATTACK VECTOR'}
                   </button>
                 </div>
               )}

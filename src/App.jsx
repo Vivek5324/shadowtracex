@@ -5,6 +5,7 @@ import AlertSystem from './components/AlertSystem';
 import AutoResponsePanel from './components/AutoResponsePanel';
 import RiskMeter from './components/RiskMeter';
 import IpLookupPanel from './components/IpLookupPanel';
+import ToolkitPage from './components/ToolkitPage';
 import { checkIp, hasApiKey } from './services/abuseipdbService';
 
 // ── Randomization helpers ──────────────────────────────────────────────
@@ -281,6 +282,7 @@ function buildAttackScenarios(attackerIp) {
 // ── Main App ──────────────────────────────────────────────────────────
 
 function App() {
+  const [activeView, setActiveView] = useState('dashboard'); // 'dashboard' | 'toolkit'
   const [logs, setLogs] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [responses, setResponses] = useState([]);
@@ -290,6 +292,8 @@ function App() {
   const [activePhase, setActivePhase] = useState(null);
   const [lookupIp, setLookupIp] = useState('');
   const logCounterRef = useRef(0);
+
+  const appState = { logs, alerts, responses, riskPercentage };
 
   const getLogTime = () => {
     const now = new Date();
@@ -399,65 +403,86 @@ function App() {
   return (
     <div className="min-h-screen bg-cyber-black text-gray-300 p-4 font-sans">
       {/* Header */}
-      <header className="mb-4 flex justify-between items-end border-b pb-3 border-cyber-gray">
+      <header className="mb-4 flex flex-col md:flex-row justify-between items-start md:items-end border-b pb-3 border-cyber-gray gap-4">
         <div>
           <h1 className="text-4xl font-bold text-white tracking-widest flex items-center shadow-text">
             <span className="text-cyber-green glow-green mr-2">SHADOWTRACE</span> X
           </h1>
           <p className="font-mono text-gray-500 text-sm mt-1">v3.0.0 // LIVE THREAT INTELLIGENCE + ATTACK SIMULATION</p>
         </div>
-        <div className="text-right">
-          <div className="font-mono text-sm">
-            STATUS: <span className={riskPercentage > 50 ? "text-red-500 animate-pulse font-bold" : "text-cyber-green font-bold"}>
-              {riskPercentage > 50 ? 'CRITICAL — UNDER ATTACK' : 'MONITORING'}
-            </span>
+        
+        <div className="flex flex-col items-end gap-2 w-full md:w-auto">
+          {/* Top-level Navigation */}
+          <div className="flex bg-black/50 border border-gray-800 rounded p-1">
+            <button 
+              onClick={() => setActiveView('dashboard')}
+              className={`px-4 py-1 text-sm font-mono uppercase transition-colors rounded ${activeView === 'dashboard' ? 'bg-cyber-green/20 text-cyber-green border border-cyber-green/50' : 'text-gray-500 hover:text-gray-300'}`}
+            >
+              SOC Dashboard
+            </button>
+            <button 
+              onClick={() => setActiveView('toolkit')}
+              className={`px-4 py-1 text-sm font-mono uppercase transition-colors rounded ${activeView === 'toolkit' ? 'bg-cyber-green/20 text-cyber-green border border-cyber-green/50' : 'text-gray-500 hover:text-gray-300'}`}
+            >
+              Security Toolkit
+            </button>
           </div>
-          <div className="font-mono text-xs text-gray-600 mt-1">
-            {new Date().toLocaleDateString()} • {logs.length} log entries
+
+          <div className="text-right mt-1">
+            <div className="font-mono text-sm">
+              STATUS: <span className={riskPercentage > 50 ? "text-red-500 animate-pulse font-bold" : "text-cyber-green font-bold"}>
+                {riskPercentage > 50 ? 'CRITICAL — UNDER ATTACK' : 'MONITORING'}
+              </span>
+            </div>
+            <div className="font-mono text-xs text-gray-600 mt-1">
+              {new Date().toLocaleDateString()} • {logs.length} log entries
+            </div>
           </div>
         </div>
       </header>
 
-      {/* Main Grid — scrollable page */}
-      <div className="grid grid-cols-12 gap-3" style={{ minHeight: 'calc(100vh - 110px)' }}>
-        
-        {/* Left Column: Risk + Attack Panel */}
-        <div className="col-span-3 flex flex-col gap-3">
-          <div style={{ minHeight: '180px' }}>
-            <RiskMeter riskPercentage={riskPercentage} />
+      {/* Main Content Area */}
+      {activeView === 'dashboard' ? (
+        <div className="grid grid-cols-12 gap-3" style={{ minHeight: 'calc(100vh - 130px)' }}>
+          {/* Left Column: Risk + Attack Panel */}
+          <div className="col-span-12 md:col-span-4 lg:col-span-3 flex flex-col gap-3">
+            <div style={{ minHeight: '180px' }}>
+              <RiskMeter riskPercentage={riskPercentage} />
+            </div>
+            <div className="flex-grow">
+              <AttackControlPanel 
+                onTriggerAttack={handleTriggerAttack} 
+                isAttacking={isAttacking}
+                activeAttackId={activeAttackId}
+                activePhase={activePhase}
+              />
+            </div>
           </div>
-          <div className="flex-grow">
-            <AttackControlPanel 
-              onTriggerAttack={handleTriggerAttack} 
-              isAttacking={isAttacking}
-              activeAttackId={activeAttackId}
-              activePhase={activePhase}
-            />
+
+          {/* Center: Live Feed */}
+          <div className="col-span-12 md:col-span-8 lg:col-span-6" style={{ minHeight: '500px' }}>
+            <LiveAttackTimeline logs={logs} onIpClick={handleIpClick} />
+          </div>
+
+          {/* Right Column: IP Intel + Alerts + Responses */}
+          <div className="col-span-12 lg:col-span-3 flex flex-col gap-3">
+            <div style={{ minHeight: '300px' }}>
+              <IpLookupPanel 
+                prefillIp={lookupIp} 
+                onClearPrefill={() => setLookupIp('')} 
+              />
+            </div>
+            <div style={{ minHeight: '200px' }}>
+              <AlertSystem alerts={alerts} />
+            </div>
+            <div style={{ minHeight: '200px' }}>
+              <AutoResponsePanel responses={responses} />
+            </div>
           </div>
         </div>
-
-        {/* Center: Live Feed */}
-        <div className="col-span-6" style={{ minHeight: '500px' }}>
-          <LiveAttackTimeline logs={logs} onIpClick={handleIpClick} />
-        </div>
-
-        {/* Right Column: IP Intel + Alerts + Responses */}
-        <div className="col-span-3 flex flex-col gap-3">
-          <div style={{ minHeight: '300px' }}>
-            <IpLookupPanel 
-              prefillIp={lookupIp} 
-              onClearPrefill={() => setLookupIp('')} 
-            />
-          </div>
-          <div style={{ minHeight: '200px' }}>
-            <AlertSystem alerts={alerts} />
-          </div>
-          <div style={{ minHeight: '200px' }}>
-            <AutoResponsePanel responses={responses} />
-          </div>
-        </div>
-
-      </div>
+      ) : (
+        <ToolkitPage appState={appState} />
+      )}
     </div>
   );
 }
